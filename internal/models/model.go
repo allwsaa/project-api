@@ -3,11 +3,11 @@ package models
 import "time"
 
 type User struct {
-	ID               int    `json:"id"`
-	Name             string `json:"name" validate:"required"`
-	Email            string `json:"email"`
-	RegistrationDate string `json:"registrationDate"`
-	Role             string `json:"role"`
+	ID               int       `json:"id"`
+	Name             string    `json:"name" validate:"required"`
+	Email            string    `json:"email"`
+	RegistrationDate time.Time `json:"registrationDate"`
+	Role             string    `json:"role"`
 }
 
 type Task struct {
