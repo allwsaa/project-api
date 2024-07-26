@@ -5,6 +5,7 @@ import (
 	"net/http"
 
 	"github.com/allwsaa/project-api/database"
+	"github.com/allwsaa/project-api/docs"
 	"github.com/allwsaa/project-api/internal/handlers"
 	"github.com/go-chi/chi"
 	"github.com/go-chi/chi/middleware"
@@ -47,6 +48,7 @@ func main() {
 	r.Get("/projects/search/title", handlers.SearchProjectsByTitle)
 	r.Get("/projects/search/manager", handlers.SearchProjectsByManager)
 
+	docs.SwaggerInfo.BasePath = "/"
 	r.Get("/swagger/*", httpSwagger.WrapHandler)
 	log.Println("Server starting on :8080")
 	http.ListenAndServe(":8080", r)
