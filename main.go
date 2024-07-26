@@ -17,7 +17,7 @@ import (
 // @version 1.0
 // @BasePath /
 func main() {
-	err := godotenv.Load()
+	err := godotenv.Load("ex.env")
 	if err != nil {
 		log.Fatalf("Error loading .env file: %v", err)
 	}
