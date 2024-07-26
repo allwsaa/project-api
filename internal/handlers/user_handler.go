@@ -22,6 +22,13 @@ func init() {
 	repository = &repositories.UserRepo{DB: db}
 }
 
+// GetAllUsers godoc
+// @Description Get a list of all users
+// @Tags users
+// @Produce json
+// @Success 200 {array} models.User
+// @Failure 500 {string} string "Internal server error"
+// @Router /users [get]
 func GetAllUsers(w http.ResponseWriter, r *http.Request) {
 	users, err := repository.GetAll()
 	if err != nil {
@@ -31,6 +38,16 @@ func GetAllUsers(w http.ResponseWriter, r *http.Request) {
 	json.NewEncoder(w).Encode(users)
 }
 
+// CreateUser godoc
+// @Description Create a new user
+// @Tags users
+// @Accept json
+// @Produce json
+// @Param user body models.User true "User data"
+// @Success 201 {object} models.User
+// @Failure 400 {string} string "Invalid input"
+// @Failure 500 {string} string "Internal server error"
+// @Router /users [post]
 func CreateUser(w http.ResponseWriter, r *http.Request) {
 	var newUser models.User
 	if err := json.NewDecoder(r.Body).Decode(&newUser); err != nil {
@@ -51,6 +68,15 @@ func CreateUser(w http.ResponseWriter, r *http.Request) {
 	json.NewEncoder(w).Encode(response)
 }
 
+// GetUserByID godoc
+// @Description Get a user by their ID
+// @Tags users
+// @Produce json
+// @Param id path int true "User ID"
+// @Success 200 {object} models.User
+// @Failure 400 {string} string "Invalid ID"
+// @Failure 404 {string} string "User not found"
+// @Router /users/{id} [get]
 func GetUserByID(w http.ResponseWriter, r *http.Request) {
 	id, err := strconv.Atoi(chi.URLParam(r, "id"))
 	if err != nil {
@@ -66,6 +92,18 @@ func GetUserByID(w http.ResponseWriter, r *http.Request) {
 	json.NewEncoder(w).Encode(user)
 }
 
+// UpdateUser godoc
+// @Description Update user details by their unique ID
+// @Tags users
+// @Accept json
+// @Produce json
+// @Param id path int true "User ID"
+// @Param user body models.User true "Updated user data"
+// @Success 200 {object} models.User
+// @Failure 400 {string} string "Invalid input"
+// @Failure 404 {string} string "User not found"
+// @Failure 500 {string} string "Internal server error"
+// @Router /users/{id} [put]
 func UpdateUser(w http.ResponseWriter, r *http.Request) {
 	var user models.User
 	if err := json.NewDecoder(r.Body).Decode(&user); err != nil {
@@ -81,6 +119,15 @@ func UpdateUser(w http.ResponseWriter, r *http.Request) {
 
 }
 
+// DeleteUser godoc
+// @Description Delete a user by their unique ID
+// @Tags users
+// @Produce json
+// @Param id path int true "User ID"
+// @Success 204
+// @Failure 400 {string} string "Invalid ID"
+// @Failure 404 {string} string "User not found"
+// @Router /users/{id} [delete]
 func DeleteUser(w http.ResponseWriter, r *http.Request) {
 	id, err := strconv.Atoi(chi.URLParam(r, "id"))
 	if err != nil {
@@ -99,6 +146,15 @@ func DeleteUser(w http.ResponseWriter, r *http.Request) {
 	w.WriteHeader(http.StatusNoContent)
 }
 
+// GetTasksByUserID godoc
+// @Description Get a list of tasks assigned to a user by their ID
+// @Tags tasks
+// @Produce json
+// @Param id path int true "User ID"
+// @Success 200 {array} models.Task
+// @Failure 400 {string} string "Invalid ID"
+// @Failure 404 {string} string "Tasks not found"
+// @Router /users/{id}/tasks [get]
 func GetTasksByUserID(w http.ResponseWriter, r *http.Request) {
 	userID, err := strconv.Atoi(chi.URLParam(r, "id"))
 	if err != nil {
@@ -116,6 +172,14 @@ func GetTasksByUserID(w http.ResponseWriter, r *http.Request) {
 	json.NewEncoder(w).Encode(tasks)
 }
 
+// FindUsersByName godoc
+// @Description Find users by their name
+// @Tags users
+// @Produce json
+// @Param name query string true "Name of the user"
+// @Success 200 {array} models.User
+// @Failure 400 {string} string "Invalid input"
+// @Router /users/search [get]
 func FindUsersByName(w http.ResponseWriter, r *http.Request) {
 	name := r.URL.Query().Get("name")
 	if name == "" {
@@ -134,6 +198,14 @@ func FindUsersByName(w http.ResponseWriter, r *http.Request) {
 	json.NewEncoder(w).Encode(users)
 }
 
+// FindUsersByEmail godoc
+// @Description Find users by their email address
+// @Tags users
+// @Produce json
+// @Param email query string true "Email address of the user"
+// @Success 200 {array} models.User
+// @Failure 400 {string} string "Invalid input"
+// @Router /users/search [get]
 func FindUsersByEmail(w http.ResponseWriter, r *http.Request) {
 	email := r.URL.Query().Get("email")
 	if email == "" {

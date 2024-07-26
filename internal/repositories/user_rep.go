@@ -35,7 +35,7 @@ func (r *UserRepo) GetUserByID(id int) (*models.User, error) {
 	err := row.Scan(&user.ID, &user.Name, &user.Email, &user.RegistrationDate, &user.Role)
 	if err != nil {
 		if err == sql.ErrNoRows {
-			return nil, fmt.Errorf("user with this ID not found", id)
+			return nil, fmt.Errorf("user with this ID %d not found", id)
 		}
 		return nil, err
 	}

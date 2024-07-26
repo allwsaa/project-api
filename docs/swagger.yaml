@@ -1,0 +1,645 @@
+basePath: /
+definitions:
+  models.Project:
+    properties:
+      completed:
+        type: string
+      id:
+        type: integer
+      managerId:
+        type: integer
+      projectDescription:
+        type: string
+      projectTitle:
+        type: string
+      started:
+        type: string
+    type: object
+  models.Task:
+    properties:
+      completionDate:
+        type: string
+      creationDate:
+        type: string
+      description:
+        type: string
+      id:
+        type: integer
+      priority:
+        enum:
+        - low
+        - medium
+        - high
+        type: string
+      projectId:
+        type: integer
+      respId:
+        type: integer
+      status:
+        enum:
+        - new
+        - inprogress
+        - done
+        type: string
+      title:
+        type: string
+    type: object
+  models.User:
+    properties:
+      email:
+        type: string
+      id:
+        type: integer
+      name:
+        type: string
+      registrationDate:
+        type: string
+      role:
+        type: string
+    required:
+    - name
+    type: object
+info:
+  contact: {}
+  title: Project API
+  version: "1.0"
+paths:
+  /projects:
+    get:
+      description: Get a list of all projects
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            items:
+              $ref: '#/definitions/models.Project'
+            type: array
+        "500":
+          description: Internal server error
+          schema:
+            type: string
+      tags:
+      - projects
+    post:
+      consumes:
+      - application/json
+      description: Create a new project
+      parameters:
+      - description: Project data
+        in: body
+        name: project
+        required: true
+        schema:
+          $ref: '#/definitions/models.Project'
+      produces:
+      - application/json
+      responses:
+        "201":
+          description: Created
+          schema:
+            $ref: '#/definitions/models.Project'
+        "400":
+          description: Invalid input
+          schema:
+            type: string
+        "500":
+          description: Internal server error
+          schema:
+            type: string
+      tags:
+      - projects
+  /projects/{id}:
+    delete:
+      description: Delete project
+      parameters:
+      - description: Project ID
+        in: path
+        name: id
+        required: true
+        type: integer
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            additionalProperties:
+              type: string
+            type: object
+        "400":
+          description: Invalid ID
+          schema:
+            type: string
+        "404":
+          description: Project not found
+          schema:
+            type: string
+      summary: Delete project
+      tags:
+      - projects
+    get:
+      description: Get project by ID
+      parameters:
+      - description: Project ID
+        in: path
+        name: id
+        required: true
+        type: integer
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            $ref: '#/definitions/models.Project'
+        "400":
+          description: Invalid ID
+          schema:
+            type: string
+        "404":
+          description: Project not found
+          schema:
+            type: string
+      tags:
+      - projects
+    put:
+      consumes:
+      - application/json
+      description: Update project
+      parameters:
+      - description: Project ID
+        in: path
+        name: id
+        required: true
+        type: integer
+      - description: Project data
+        in: body
+        name: project
+        required: true
+        schema:
+          $ref: '#/definitions/models.Project'
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            $ref: '#/definitions/models.Project'
+        "400":
+          description: Invalid input
+          schema:
+            type: string
+        "404":
+          description: Project not found
+          schema:
+            type: string
+        "500":
+          description: Internal server error
+          schema:
+            type: string
+      summary: Update project
+      tags:
+      - projects
+  /projects/{id}/tasks:
+    get:
+      description: Get a list of tasks associated with a project by its ID
+      parameters:
+      - description: Project ID
+        in: path
+        name: id
+        required: true
+        type: integer
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            items:
+              $ref: '#/definitions/models.Task'
+            type: array
+        "400":
+          description: Invalid ID
+          schema:
+            type: string
+        "404":
+          description: Tasks not found
+          schema:
+            type: string
+      summary: Get tasks by project ID
+      tags:
+      - tasks
+  /projects/search/manager:
+    get:
+      description: Search projects based on manager's ID
+      parameters:
+      - description: Manager's ID
+        in: query
+        name: managerId
+        required: true
+        type: integer
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            items:
+              $ref: '#/definitions/models.Project'
+            type: array
+        "400":
+          description: Invalid input
+          schema:
+            type: string
+        "500":
+          description: Internal server error
+          schema:
+            type: string
+      summary: Search projects by manager
+      tags:
+      - projects
+  /projects/search/title:
+    get:
+      description: Search projects based on title
+      parameters:
+      - description: Title of the project
+        in: query
+        name: title
+        required: true
+        type: string
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            items:
+              $ref: '#/definitions/models.Project'
+            type: array
+        "400":
+          description: Invalid input
+          schema:
+            type: string
+      summary: Search projects by title
+      tags:
+      - projects
+  /tasks:
+    get:
+      description: Get a list of all tasks
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            items:
+              $ref: '#/definitions/models.Task'
+            type: array
+        "500":
+          description: Internal server error
+          schema:
+            type: string
+      tags:
+      - tasks
+    post:
+      consumes:
+      - application/json
+      description: Create a new task
+      parameters:
+      - description: Task data
+        in: body
+        name: task
+        required: true
+        schema:
+          $ref: '#/definitions/models.Task'
+      produces:
+      - application/json
+      responses:
+        "201":
+          description: Created
+          schema:
+            additionalProperties:
+              type: integer
+            type: object
+        "400":
+          description: Invalid request
+          schema:
+            type: string
+        "500":
+          description: Failed to create task
+          schema:
+            type: string
+      tags:
+      - tasks
+  /tasks/{id}:
+    delete:
+      description: Delete a task by its unique ID
+      parameters:
+      - description: Task ID
+        in: path
+        name: id
+        required: true
+        type: integer
+      produces:
+      - application/json
+      responses:
+        "204":
+          description: No Content
+        "404":
+          description: Task not found
+          schema:
+            type: string
+        "500":
+          description: Failed to delete task
+          schema:
+            type: string
+      tags:
+      - tasks
+    get:
+      description: Get task by ID
+      parameters:
+      - description: Task ID
+        in: path
+        name: id
+        required: true
+        type: integer
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            $ref: '#/definitions/models.Task'
+        "400":
+          description: Invalid ID
+          schema:
+            type: string
+        "404":
+          description: Task not found
+          schema:
+            type: string
+      tags:
+      - tasks
+    put:
+      consumes:
+      - application/json
+      description: Update task details by its unique ID
+      parameters:
+      - description: Task ID
+        in: path
+        name: id
+        required: true
+        type: integer
+      - description: Updated task data
+        in: body
+        name: task
+        required: true
+        schema:
+          $ref: '#/definitions/models.Task'
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            $ref: '#/definitions/models.Task'
+        "400":
+          description: Invalid request
+          schema:
+            type: string
+        "404":
+          description: Task not found
+          schema:
+            type: string
+        "500":
+          description: Failed to update task
+          schema:
+            type: string
+      tags:
+      - tasks
+  /tasks/search:
+    get:
+      description: Search tasks based on criteria
+      parameters:
+      - description: Title of the task
+        in: query
+        name: title
+        type: string
+      - description: Status of the task
+        in: query
+        name: status
+        type: string
+      - description: Priority of the task
+        in: query
+        name: priority
+        type: string
+      - description: Assigned user ID
+        in: query
+        name: respId
+        type: string
+      - description: Project ID
+        in: query
+        name: projectId
+        type: string
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            items:
+              $ref: '#/definitions/models.Task'
+            type: array
+        "500":
+          description: Failed to search tasks
+          schema:
+            type: string
+      tags:
+      - tasks
+  /users:
+    get:
+      description: Get a list of all users
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            items:
+              $ref: '#/definitions/models.User'
+            type: array
+        "500":
+          description: Internal server error
+          schema:
+            type: string
+      tags:
+      - users
+    post:
+      consumes:
+      - application/json
+      description: Create a new user
+      parameters:
+      - description: User data
+        in: body
+        name: user
+        required: true
+        schema:
+          $ref: '#/definitions/models.User'
+      produces:
+      - application/json
+      responses:
+        "201":
+          description: Created
+          schema:
+            $ref: '#/definitions/models.User'
+        "400":
+          description: Invalid input
+          schema:
+            type: string
+        "500":
+          description: Internal server error
+          schema:
+            type: string
+      tags:
+      - users
+  /users/{id}:
+    delete:
+      description: Delete a user by their unique ID
+      parameters:
+      - description: User ID
+        in: path
+        name: id
+        required: true
+        type: integer
+      produces:
+      - application/json
+      responses:
+        "204":
+          description: No Content
+        "400":
+          description: Invalid ID
+          schema:
+            type: string
+        "404":
+          description: User not found
+          schema:
+            type: string
+      tags:
+      - users
+    get:
+      description: Get a user by their ID
+      parameters:
+      - description: User ID
+        in: path
+        name: id
+        required: true
+        type: integer
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            $ref: '#/definitions/models.User'
+        "400":
+          description: Invalid ID
+          schema:
+            type: string
+        "404":
+          description: User not found
+          schema:
+            type: string
+      tags:
+      - users
+    put:
+      consumes:
+      - application/json
+      description: Update user details by their unique ID
+      parameters:
+      - description: User ID
+        in: path
+        name: id
+        required: true
+        type: integer
+      - description: Updated user data
+        in: body
+        name: user
+        required: true
+        schema:
+          $ref: '#/definitions/models.User'
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            $ref: '#/definitions/models.User'
+        "400":
+          description: Invalid input
+          schema:
+            type: string
+        "404":
+          description: User not found
+          schema:
+            type: string
+        "500":
+          description: Internal server error
+          schema:
+            type: string
+      tags:
+      - users
+  /users/{id}/tasks:
+    get:
+      description: Get a list of tasks assigned to a user by their ID
+      parameters:
+      - description: User ID
+        in: path
+        name: id
+        required: true
+        type: integer
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            items:
+              $ref: '#/definitions/models.Task'
+            type: array
+        "400":
+          description: Invalid ID
+          schema:
+            type: string
+        "404":
+          description: Tasks not found
+          schema:
+            type: string
+      tags:
+      - tasks
+  /users/search:
+    get:
+      description: Find users by their email address
+      parameters:
+      - description: Email address of the user
+        in: query
+        name: email
+        required: true
+        type: string
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            items:
+              $ref: '#/definitions/models.User'
+            type: array
+        "400":
+          description: Invalid input
+          schema:
+            type: string
+      tags:
+      - users
+swagger: "2.0"
