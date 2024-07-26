@@ -9,12 +9,12 @@ services:
     ports:
       - "8080:8080"
     environment:
-      - PORT=8080
-      - POSTGRES_HOST=localhost
-      - POSTGRES_PORT=5432
-      - POSTGRES_USER=postgres
-      - POSTGRES_PASSWORD=xnesn2910
-      - POSTGRES_DB=project_management
+      - PORT=${PORT}
+      - POSTGRES_HOST=${POSTGRES_HOST}
+      - POSTGRES_PORT=${POSTGRES_PORT}
+      - POSTGRES_USER=${POSTGRES_USER}
+      - POSTGRES_PASSWORD=${POSTGRES_PASSWORD}
+      - POSTGRES_DB=${POSTGRES_DB}
     depends_on:
       - db
     networks:
@@ -23,9 +23,9 @@ services:
   db:
     image: postgres:13-alpine
     environment:
-      POSTGRES_DB: project_management
-      POSTGRES_USER: postgres
-      POSTGRES_PASSWORD: xnesn2910
+      POSTGRES_DB: ${POSTGRES_DB}
+      POSTGRES_USER: ${POSTGRES_USER}
+      POSTGRES_PASSWORD: ${POSTGRES_PASSWORD}
     ports:
       - "5432:5432"
     volumes:

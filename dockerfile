@@ -16,4 +16,6 @@ COPY --from=builder /project-api /project-api
 
 EXPOSE 8080
 
+COPY .env /app/.env
+
 CMD ["/project-api"]

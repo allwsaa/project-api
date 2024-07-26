@@ -9,6 +9,7 @@ import (
 	"github.com/allwsaa/project-api/internal/handlers"
 	"github.com/go-chi/chi"
 	"github.com/go-chi/chi/middleware"
+	"github.com/joho/godotenv"
 	httpSwagger "github.com/swaggo/http-swagger"
 )
 
@@ -16,6 +17,10 @@ import (
 // @version 1.0
 // @BasePath /
 func main() {
+	err := godotenv.Load()
+	if err != nil {
+		log.Fatalf("Error loading .env file: %v", err)
+	}
 	database.SetupDB()
 
 	r := chi.NewRouter()
