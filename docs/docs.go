@@ -902,15 +902,22 @@ const docTemplate = `{
     "definitions": {
         "models.Project": {
             "type": "object",
+            "required": [
+                "managerId",
+                "projectTitle"
+            ],
             "properties": {
                 "completed": {
-                    "type": "string"
+                    "type": "string",
+                    "example": "2024-09-20T15:04:05Z"
                 },
                 "id": {
-                    "type": "integer"
+                    "type": "integer",
+                    "readOnly": true
                 },
                 "managerId": {
-                    "type": "integer"
+                    "type": "integer",
+                    "example": 1
                 },
                 "projectDescription": {
                     "type": "string"
@@ -919,24 +926,32 @@ const docTemplate = `{
                     "type": "string"
                 },
                 "started": {
-                    "type": "string"
+                    "type": "string",
+                    "readOnly": true
                 }
             }
         },
         "models.Task": {
             "type": "object",
+            "required": [
+                "respId",
+                "title"
+            ],
             "properties": {
                 "completionDate": {
-                    "type": "string"
+                    "type": "string",
+                    "example": "2024-09-20T15:04:05Z"
                 },
                 "creationDate": {
-                    "type": "string"
+                    "type": "string",
+                    "readOnly": true
                 },
                 "description": {
                     "type": "string"
                 },
                 "id": {
-                    "type": "integer"
+                    "type": "integer",
+                    "readOnly": true
                 },
                 "priority": {
                     "type": "string",
@@ -950,7 +965,8 @@ const docTemplate = `{
                     "type": "integer"
                 },
                 "respId": {
-                    "type": "integer"
+                    "type": "integer",
+                    "example": 1
                 },
                 "status": {
                     "type": "string",
@@ -968,20 +984,25 @@ const docTemplate = `{
         "models.User": {
             "type": "object",
             "required": [
-                "name"
+                "email",
+                "name",
+                "role"
             ],
             "properties": {
                 "email": {
-                    "type": "string"
+                    "type": "string",
+                    "example": "string@gmail.com"
                 },
                 "id": {
-                    "type": "integer"
+                    "type": "integer",
+                    "readOnly": true
                 },
                 "name": {
                     "type": "string"
                 },
                 "registrationDate": {
-                    "type": "string"
+                    "type": "string",
+                    "readOnly": true
                 },
                 "role": {
                     "type": "string"

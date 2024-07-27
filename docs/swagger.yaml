@@ -3,27 +3,37 @@ definitions:
   models.Project:
     properties:
       completed:
+        example: "2024-09-20T15:04:05Z"
         type: string
       id:
+        readOnly: true
         type: integer
       managerId:
+        example: 1
         type: integer
       projectDescription:
         type: string
       projectTitle:
         type: string
       started:
+        readOnly: true
         type: string
+    required:
+    - managerId
+    - projectTitle
     type: object
   models.Task:
     properties:
       completionDate:
+        example: "2024-09-20T15:04:05Z"
         type: string
       creationDate:
+        readOnly: true
         type: string
       description:
         type: string
       id:
+        readOnly: true
         type: integer
       priority:
         enum:
@@ -34,6 +44,7 @@ definitions:
       projectId:
         type: integer
       respId:
+        example: 1
         type: integer
       status:
         enum:
@@ -43,21 +54,29 @@ definitions:
         type: string
       title:
         type: string
+    required:
+    - respId
+    - title
     type: object
   models.User:
     properties:
       email:
+        example: string@gmail.com
         type: string
       id:
+        readOnly: true
         type: integer
       name:
         type: string
       registrationDate:
+        readOnly: true
         type: string
       role:
         type: string
     required:
+    - email
     - name
+    - role
     type: object
 info:
   contact: {}
